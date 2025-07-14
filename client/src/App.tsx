@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router";
 import Login from "./login";
+import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/dasboard";
 
 function PrivateRoute({ children }: { children: React.ReactElement }) {
@@ -13,13 +14,15 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route
-        path="/"
+        path="/dashboard"
         element={
           <PrivateRoute>
-            <Dashboard />
+            <DashboardLayout />
           </PrivateRoute>
         }
-      />
+      >
+        <Route index element={<Dashboard />} />
+      </Route>
     </Routes>
   );
 }

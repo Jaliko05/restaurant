@@ -1,3 +1,4 @@
+import { UserRole } from "../../generated/prisma";
 import { prisma } from "../config/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -21,6 +22,16 @@ export const getUserByEmail = async (email: string) => {
         where: { email },
     });
 }
+
+
+
+export const updateRoleUser = async (email: string, role: UserRole) => {
+    return await prisma.user.update({
+        where: { email },
+        data: { role },
+    });
+};
+
 
 export const login = async (email: string, password: string) => {
     // Busca el usuario por email

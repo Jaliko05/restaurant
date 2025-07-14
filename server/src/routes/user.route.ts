@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsersController, createUserController, getUserController, loginController } from "../controllers/user.controller";
+import { getUsersController, createUserController, getUserController, loginController, updateRoleUserController } from "../controllers/user.controller";
 
 const userRouter = Router();
 
@@ -134,5 +134,32 @@ userRouter.post('/create', createUserController);
  *                   example: "Failed to login user"
  */
 userRouter.post('/login', loginController);
+
+
+/**
+ * @openapi
+ * /api/users/update-role:
+ *   post:
+ *     summary: Actualiza el rol de un usuario
+ *     tags:
+ *       - Usuarios
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Rol de usuario actualizado
+ *       500:
+ *         description: Error al actualizar el rol del usuario
+ */
+userRouter.post('/update-role', updateRoleUserController);
 
 export default userRouter;

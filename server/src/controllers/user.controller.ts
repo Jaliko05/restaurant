@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsers, getUserByEmail, createUser, login } from "../services/user.service";
+import { getAllUsers, getUserByEmail, createUser, login, updateRoleUser } from "../services/user.service";
 
 
 export const getUsersController = async (req: Request, res: Response) => {
@@ -45,5 +45,15 @@ export const loginController = async (req: Request, res: Response) => {
         res.json({ token, user });
     } catch (error) {
         res.status(401).json({ error: "Invalid credentials" });
+    }
+}
+
+export const updateRoleUserController = async (req: Request, res: Response) => {
+    const { email, role } = req.body;
+    try {
+        const updatedUser = await updateRoleUser(email, role);
+        res.json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update user role" });
     }
 }
