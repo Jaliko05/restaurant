@@ -40,6 +40,7 @@ model Order {
   userId        String
   total         Float
   createdAt     DateTime       @default(now())
+  orderStatus   OrderStatus    @default(PENDING)
   user          User           @relation(fields: [userId], references: [id])
   productOrders ProductOrder[]
 
@@ -60,4 +61,12 @@ model ProductOrder {
 enum UserRole {
   USER
   ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
 }

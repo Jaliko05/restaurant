@@ -23,6 +23,7 @@ export const createUserController = async (req: Request, res: Response) => {
 
 export const getUserController = async (req: Request, res: Response) => {
     const { email } = req.query;
+    console.log("Email query parameter:", req.query);
     if (typeof email !== "string") {
         return res.status(400).json({ error: "Email query parameter is required and must be a string" });
     }
