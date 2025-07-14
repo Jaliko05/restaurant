@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsersController, createUserController, getUserController } from "../controllers/user.controller";
+import { getUsersController, createUserController, getUserController, loginController } from "../controllers/user.controller";
 
 const userRouter = Router();
 
@@ -70,6 +70,69 @@ userRouter.post('/create', createUserController);
  *       404:
  *         description: Usuario no encontrado
  */
-userRouter.get('/get', getUserController);
+
+
+
+/**
+ * @openapi
+ * /api/users/login:
+ *   post:
+ *     summary: Inicia sesión de usuario
+ *     tags:
+ *       - Usuarios
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Inicio de sesión exitoso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *       401:
+ *         description: Credenciales inválidas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid credentials"
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to login user"
+ */
+userRouter.post('/login', loginController);
 
 export default userRouter;

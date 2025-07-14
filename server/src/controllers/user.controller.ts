@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsers, getUserByEmail, createUser } from "../services/user.service";
+import { getAllUsers, getUserByEmail, createUser, login } from "../services/user.service";
 
 
 export const getUsersController = async (req: Request, res: Response) => {
@@ -37,3 +37,13 @@ export const getUserController = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Failed to fetch user" });
     }
 };
+
+export const loginController = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    try {
+        const { token, user } = await login(email, password);
+        res.json({ token, user });
+    } catch (error) {
+        res.status(401).json({ error: "Invalid credentials" });
+    }
+}

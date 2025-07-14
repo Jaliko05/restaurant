@@ -1,34 +1,16 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-import dotenv from 'dotenv';
-dotenv.config();
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 
-const SECRET_KEY = process.env.SECRET_KEY as string;
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
-interface CustomJwtPayload extends JwtPayload {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-}
-
-export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-        jwt.verify(token, SECRET_KEY, (err, decoded) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-            // Type guard to ensure decoded is an object with our expected properties
-            if (typeof decoded === 'object' && decoded !== null && 'id' in decoded) {
-                req.user = decoded as CustomJwtPayload;
-            } else {
-                return res.sendStatus(403);
-            }
-            next();
-        });
-    } else {
-        res.sendStatus(401);
+export function authMiddleware(req: Request, res: Response, next: NextFunction) {
+    const header = req.headers.authorization;
+    if (!header) return res.status(401).json({ message: "Sin autenticación" });
+    const token = header.split(" ")[1];
+    try {
+        (req as any).user = jwt.verify(token, JWT_SECRET);
+        next();
+    } catch {
+        res.status(401).json({ message: "Token inválido" });
     }
-};
+}

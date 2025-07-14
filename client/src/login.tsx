@@ -4,13 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
-// Define el esquema de validación con Zod
 const schema = z.object({
-  username: z.string().min(3, "El usuario debe tener al menos 3 caracteres"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+  email: z.string().min(3, "El usuario debe tener al menos 3 caracteres"),
+  password: z.string().min(4, "La contraseña debe tener al menos 4 caracteres"),
 });
 
 type FormData = z.infer<typeof schema>;
+
+const URL_SERVER = import.meta.env.VITE_URL_SERVER || "http://localhost:3000";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -24,21 +25,19 @@ export default function Login() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await axios.post(
-        "http://localhost:3001/api/auth/login",
-        data
-      );
+      const res = await axios.post(`${URL_SERVER}/api/users/login`, data);
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
-    } catch {
+    } catch (error) {
       alert("Login incorrecto");
+      console.error("Error during login:", error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("username")} placeholder="Usuario" />
-      {errors.username && <span>{errors.username.message}</span>}
+      <input {...register("email")} placeholder="Usuario" />
+      {errors.email && <span>{errors.email.message}</span>}
       <input
         type="password"
         {...register("password")}
