@@ -13,7 +13,7 @@ export const getManyProductsController = async (req: Request, res: Response) => 
 export const getProductByIdController = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const product = await getProductById(Number(id));
+        const product = await getProductById(id);
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
@@ -37,9 +37,10 @@ export const updateProductController = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name, price, description } = req.body;
     try {
-        const updatedProduct = await updateProduct(Number(id), { name, price, description });
+        const updatedProduct = await updateProduct(id, { name, price, description });
         res.json(updatedProduct);
     } catch (error) {
+        console.error("Error updating product:", error);
         res.status(500).json({ error: "Failed to update product" });
     }
 };
