@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
+import { User } from '../../generated/prisma';
 
 interface CustomJwtPayload extends JwtPayload {
   id: string;
