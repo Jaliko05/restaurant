@@ -6,12 +6,12 @@ type UserRole = "USER" | "ADMIN";
 const navConfig = [
   {
     label: "Productos",
-    path: "/dashboard/productos",
+    path: "/dashboard/products",
     roles: ["ADMIN"] as UserRole[],
   },
   {
     label: "Órdenes",
-    path: "/dashboard/ordenes",
+    path: "/dashboard/orders",
     roles: ["ADMIN", "USER"] as UserRole[],
   },
   { label: "Salir", action: true, roles: ["ADMIN", "USER"] as UserRole[] },

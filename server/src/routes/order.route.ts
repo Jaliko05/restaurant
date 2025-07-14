@@ -5,7 +5,7 @@ const orderRouter = Router();
 
 /**
  * @openapi
- * /api/orders:
+ * /api/orders/getmany:
  *   get:
  *     summary: Obtiene todas las órdenes
  *     tags:
@@ -20,7 +20,7 @@ const orderRouter = Router();
  *               items:
  *                 type: object
  */
-orderRouter.get("/", getManyOrdersController);
+orderRouter.get("/getmany", getManyOrdersController);
 
 /**
  * @openapi
@@ -46,7 +46,7 @@ orderRouter.get("/:id", getOrderByIdController);
 
 /**
  * @openapi
- * /api/orders:
+ * /api/orders/create:
  *   post:
  *     summary: Crea una nueva orden
  *     tags:
@@ -77,7 +77,7 @@ orderRouter.get("/:id", getOrderByIdController);
  *       400:
  *         description: Error de validación
  */
-orderRouter.post("/", createOrderController);
+orderRouter.post("/create", createOrderController);
 
 /**
  * @openapi
