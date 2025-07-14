@@ -1,6 +1,7 @@
 import express from 'express';
 import userRouter from './routes/user.route.js';
 import productRouter from './routes/product.route.js';
+import orderRouter from './routes/order.route.js';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -24,7 +25,7 @@ const swaggerOptions = {
             description: 'Documentación de la API con Swagger :)',
         },
     },
-    apis: ['./src/routes/*.ts'], // Rutas donde tienes tus endpoints
+    apis: ['./src/routes/*.ts'],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
@@ -32,6 +33,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
+app.use('/api/orders', orderRouter);
 
 
 app.listen(3000, () => {
