@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,20 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { getManyProducts, getProductById, createProduct, updateProduct } from "../services/product.service.js";
-export const getManyProductsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateProductController = exports.createProductController = exports.getProductByIdController = exports.getManyProductsController = void 0;
+const product_service_1 = require("../services/product.service");
+const getManyProductsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield getManyProducts();
+        const users = yield (0, product_service_1.getManyProducts)();
         res.json(users);
     }
     catch (error) {
         res.status(500).json({ error: "Failed to fetch products" });
     }
 });
-export const getProductByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getManyProductsController = getManyProductsController;
+const getProductByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const product = yield getProductById(id);
+        const product = yield (0, product_service_1.getProductById)(id);
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
@@ -30,21 +34,23 @@ export const getProductByIdController = (req, res) => __awaiter(void 0, void 0, 
         res.status(500).json({ error: "Failed to fetch product" });
     }
 });
-export const createProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getProductByIdController = getProductByIdController;
+const createProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, price, description } = req.body;
     try {
-        const newProduct = yield createProduct({ name, price, description });
+        const newProduct = yield (0, product_service_1.createProduct)({ name, price, description });
         res.status(201).json(newProduct);
     }
     catch (error) {
         res.status(500).json({ error: "Failed to create product" });
     }
 });
-export const updateProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createProductController = createProductController;
+const updateProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { name, price, description } = req.body;
     try {
-        const updatedProduct = yield updateProduct(id, { name, price, description });
+        const updatedProduct = yield (0, product_service_1.updateProduct)(id, { name, price, description });
         res.json(updatedProduct);
     }
     catch (error) {
@@ -52,3 +58,4 @@ export const updateProductController = (req, res) => __awaiter(void 0, void 0, v
         res.status(500).json({ error: "Failed to update product" });
     }
 });
+exports.updateProductController = updateProductController;

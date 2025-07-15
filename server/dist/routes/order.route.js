@@ -1,6 +1,8 @@
-import { Router } from "express";
-import { getManyOrdersController, createOrderController, getOrderByIdController, updateOrderStatusController } from "../controllers/order.controller.js";
-const orderRouter = Router();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const order_controller_1 = require("../controllers/order.controller");
+const orderRouter = (0, express_1.Router)();
 /**
  * @openapi
  * /api/orders/getmany:
@@ -18,7 +20,7 @@ const orderRouter = Router();
  *               items:
  *                 type: object
  */
-orderRouter.get("/getmany", getManyOrdersController);
+orderRouter.get("/getmany", order_controller_1.getManyOrdersController);
 /**
  * @openapi
  * /api/orders/{id}:
@@ -39,7 +41,7 @@ orderRouter.get("/getmany", getManyOrdersController);
  *       404:
  *         description: Orden no encontrada
  */
-orderRouter.get("/:id", getOrderByIdController);
+orderRouter.get("/:id", order_controller_1.getOrderByIdController);
 /**
  * @openapi
  * /api/orders/create:
@@ -73,7 +75,7 @@ orderRouter.get("/:id", getOrderByIdController);
  *       400:
  *         description: Error de validación
  */
-orderRouter.post("/create", createOrderController);
+orderRouter.post("/create", order_controller_1.createOrderController);
 /**
  * @openapi
  * /api/orders/{id}/status:
@@ -106,5 +108,5 @@ orderRouter.post("/create", createOrderController);
  *       404:
  *         description: Orden no encontrada
  */
-orderRouter.put("/:id/status", updateOrderStatusController);
-export default orderRouter;
+orderRouter.put("/:id/status", order_controller_1.updateOrderStatusController);
+exports.default = orderRouter;

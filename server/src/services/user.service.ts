@@ -1,5 +1,5 @@
-import { UserRole } from "../../generated/prisma/index.js";
-import { prisma } from "../config/prisma.js";
+import { UserRole } from "../../generated/prisma";
+import { prisma } from "../config/prisma";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
@@ -49,4 +49,4 @@ export const login = async (email: string, password: string) => {
     const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
     return { token, user: { id: user.id, name: user.name, email: user.email, role: user.role } };
-};
+}; 

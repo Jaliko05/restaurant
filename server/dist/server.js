@@ -1,16 +1,21 @@
-import express from 'express';
-import userRouter from './routes/user.route.js';
-import productRouter from './routes/product.route.js';
-import orderRouter from './routes/order.route.js';
-import cors from 'cors';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJsdoc from 'swagger-jsdoc';
-const app = express();
-app.use(cors({
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const user_route_1 = __importDefault(require("./routes/user.route"));
+const product_route_1 = __importDefault(require("./routes/product.route"));
+const order_route_1 = __importDefault(require("./routes/order.route"));
+const cors_1 = __importDefault(require("cors"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
+const app = (0, express_1.default)();
+app.use((0, cors_1.default)({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
-app.use(express.json());
+app.use(express_1.default.json());
 const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
@@ -20,13 +25,13 @@ const swaggerOptions = {
             description: 'Documentación de la API con Swagger :)',
         },
     },
-    apis: process.env.NODE_ENV === 'production' ? ['./dist/routes/*.js'] : ['./src/routes/*.ts'],
+    apis: ['./src/routes/*.ts'],
 };
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use('/api/users', userRouter);
-app.use('/api/products', productRouter);
-app.use('/api/orders', orderRouter);
+const swaggerDocs = (0, swagger_jsdoc_1.default)(swaggerOptions);
+app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocs));
+app.use('/api/users', user_route_1.default);
+app.use('/api/products', product_route_1.default);
+app.use('/api/orders', order_route_1.default);
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');
 });

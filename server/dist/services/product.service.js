@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,23 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { prisma } from "../config/prisma.js";
-export const getManyProducts = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prisma.product.findMany();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateProduct = exports.createProduct = exports.getProductById = exports.getManyProducts = void 0;
+const prisma_1 = require("../config/prisma");
+const getManyProducts = () => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.prisma.product.findMany();
 });
-export const getProductById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prisma.product.findUnique({
+exports.getManyProducts = getManyProducts;
+const getProductById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.prisma.product.findUnique({
         where: { id: id.toString() },
     });
 });
-export const createProduct = (productData) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prisma.product.create({
+exports.getProductById = getProductById;
+const createProduct = (productData) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.prisma.product.create({
         data: productData,
     });
 });
-export const updateProduct = (id, productData) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prisma.product.update({
+exports.createProduct = createProduct;
+const updateProduct = (id, productData) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.prisma.product.update({
         where: { id: id },
         data: productData,
     });
 });
+exports.updateProduct = updateProduct;

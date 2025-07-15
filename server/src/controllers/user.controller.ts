@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsers, getUserByEmail, createUser, login, updateRoleUser } from "../services/user.service.js";
+import { getAllUsers, getUserByEmail, createUser, login, updateRoleUser } from "../services/user.service";
 
 
 export const getUsersController = async (req: Request, res: Response) => {

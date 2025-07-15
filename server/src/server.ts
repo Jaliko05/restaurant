@@ -1,7 +1,7 @@
 import express from 'express';
-import userRouter from './routes/user.route.js';
-import productRouter from './routes/product.route.js';
-import orderRouter from './routes/order.route.js';
+import userRouter from './routes/user.route';
+import productRouter from './routes/product.route';
+import orderRouter from './routes/order.route';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -25,7 +25,7 @@ const swaggerOptions = {
             description: 'Documentación de la API con Swagger :)',
         },
     },
-    apis: process.env.NODE_ENV === 'production' ? ['./dist/routes/*.js'] : ['./src/routes/*.ts'],
+    apis: ['./src/routes/*.ts'],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
