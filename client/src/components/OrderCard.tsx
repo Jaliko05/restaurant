@@ -33,7 +33,7 @@ export const OrderCard = ({ order, onUpdated }: Props) => {
     if (!token) return;
 
     await axios.put(
-      `${URL_SERVER}/api/orders/${order.id}`,
+      `${URL_SERVER}/api/orders/status/${order.id}`,
       { status: "DELIVERED" },
       { headers: { Authorization: `Bearer ${token}` } }
     );

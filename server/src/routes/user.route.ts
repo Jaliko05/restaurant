@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getUsersController, createUserController, getUserController, loginController, updateRoleUserController } from "../controllers/user.controller";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const userRouter = Router();
 
@@ -10,6 +11,8 @@ const userRouter = Router();
  *     summary: Obtiene todos los usuarios
  *     tags:
  *       - Usuarios
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de usuarios
@@ -20,7 +23,7 @@ const userRouter = Router();
  *               items:
  *                 type: object
  */
-userRouter.get('/getmany', getUsersController);
+userRouter.get('/getmany', authMiddleware, getUsersController);
 
 /**
  * @openapi
@@ -29,6 +32,8 @@ userRouter.get('/getmany', getUsersController);
  *     summary: Crea un nuevo usuario
  *     tags:
  *       - Usuarios
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -48,7 +53,7 @@ userRouter.get('/getmany', getUsersController);
  *       400:
  *         description: Error de validación
  */
-userRouter.post('/create', createUserController);
+userRouter.post('/create', authMiddleware, createUserController);
 
 /**
  * @openapi
@@ -143,6 +148,8 @@ userRouter.post('/login', loginController);
  *     summary: Actualiza el rol de un usuario
  *     tags:
  *       - Usuarios
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -160,6 +167,6 @@ userRouter.post('/login', loginController);
  *       500:
  *         description: Error al actualizar el rol del usuario
  */
-userRouter.post('/update-role', updateRoleUserController);
+userRouter.post('/update-role', authMiddleware, updateRoleUserController);
 
 export default userRouter;

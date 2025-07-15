@@ -21,18 +21,29 @@ export const ProductCard = ({ product, onUpdated }: Props) => {
   const [price, setPrice] = useState(product.price.toString());
   const [description, setDescription] = useState(product.description || "");
 
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : "";
+
   const handleUpdate = async () => {
-    await axios.put(`${URL_SERVER}/api/products/${product.id}`, {
-      name,
-      price: parseFloat(price),
-      description,
-    });
+    await axios.put(
+      `${URL_SERVER}/api/products/update/${product.id}`,
+      {
+        name,
+        price: parseFloat(price),
+        description,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     setEditing(false);
     onUpdated?.();
   };
 
   const handleDelete = async () => {
-    await axios.delete(`${URL_SERVER}/api/products/delete/${product.id}`);
+    await axios.delete(`${URL_SERVER}/api/products/delete/${product.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     onUpdated?.();
   };
 

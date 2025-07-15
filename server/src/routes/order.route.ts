@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getManyOrdersController, createOrderController, getOrderByIdController, updateOrderStatusController } from "../controllers/order.controller";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const orderRouter = Router();
 
@@ -10,6 +11,8 @@ const orderRouter = Router();
  *     summary: Obtiene todas las órdenes
  *     tags:
  *       - Órdenes
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de órdenes
@@ -19,8 +22,10 @@ const orderRouter = Router();
  *               type: array
  *               items:
  *                 type: object
+ *       401:
+ *         description: Sin autenticación o token inválido
  */
-orderRouter.get("/getmany", getManyOrdersController);
+orderRouter.get("/getmany", authMiddleware, getManyOrdersController);
 
 /**
  * @openapi
@@ -29,6 +34,8 @@ orderRouter.get("/getmany", getManyOrdersController);
  *     summary: Obtiene una orden por ID
  *     tags:
  *       - Órdenes
+ * security:
+ *   - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -42,7 +49,7 @@ orderRouter.get("/getmany", getManyOrdersController);
  *       404:
  *         description: Orden no encontrada
  */
-orderRouter.get("/:id", getOrderByIdController);
+orderRouter.get("/:id", authMiddleware, getOrderByIdController);
 
 /**
  * @openapi
@@ -51,6 +58,8 @@ orderRouter.get("/:id", getOrderByIdController);
  *     summary: Crea una nueva orden
  *     tags:
  *       - Órdenes
+ * security:
+ *   - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -77,15 +86,17 @@ orderRouter.get("/:id", getOrderByIdController);
  *       400:
  *         description: Error de validación
  */
-orderRouter.post("/create", createOrderController);
+orderRouter.post("/create", authMiddleware, createOrderController);
 
 /**
  * @openapi
- * /api/orders/{id}/status:
+ * /api/orders/status/{id}:
  *   put:
  *     summary: Actualiza el estado de una orden
  *     tags:
  *       - Órdenes
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -102,15 +113,17 @@ orderRouter.post("/create", createOrderController);
  *             properties:
  *               status:
  *                 type: string
- *                 enum: [PENDING, PAID, SHIPPED, DELIVERED, CANCELLED]
+ *                 enum: [PAID, PENDING , SHIPPED, DELIVERED, CANCELLED]
  *     responses:
  *       200:
  *         description: Estado actualizado
  *       400:
  *         description: Error de validación
+ *       401:
+ *         description: Sin autenticación o token inválido
  *       404:
  *         description: Orden no encontrada
  */
-orderRouter.put("/:id/status", updateOrderStatusController);
+orderRouter.put("/status/:id", authMiddleware, updateOrderStatusController);
 
 export default orderRouter;

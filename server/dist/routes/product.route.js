@@ -70,7 +70,7 @@ productRouter.get('/:id', product_controller_1.getProductByIdController);
 productRouter.post('/create', product_controller_1.createProductController);
 /**
  * @openapi
- * /api/products/{id}:
+ * /api/products/update/{id}:
  *   put:
  *     summary: Actualiza un producto por ID
  *     tags:
@@ -100,7 +100,7 @@ productRouter.post('/create', product_controller_1.createProductController);
  *       404:
  *         description: Producto no encontrado
  */
-productRouter.put('/:id', product_controller_1.updateProductController);
+productRouter.put('/update/:id', product_controller_1.updateProductController);
 /**
  * @openapi
  * /api/products/delete/{id}:

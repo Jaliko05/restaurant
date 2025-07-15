@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const order_controller_1 = require("../controllers/order.controller");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
 const orderRouter = (0, express_1.Router)();
 /**
  * @openapi
@@ -10,6 +11,8 @@ const orderRouter = (0, express_1.Router)();
  *     summary: Obtiene todas las órdenes
  *     tags:
  *       - Órdenes
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de órdenes
@@ -19,8 +22,10 @@ const orderRouter = (0, express_1.Router)();
  *               type: array
  *               items:
  *                 type: object
+ *       401:
+ *         description: Sin autenticación o token inválido
  */
-orderRouter.get("/getmany", order_controller_1.getManyOrdersController);
+orderRouter.get("/getmany", auth_middleware_1.authMiddleware, order_controller_1.getManyOrdersController);
 /**
  * @openapi
  * /api/orders/{id}:
@@ -78,11 +83,13 @@ orderRouter.get("/:id", order_controller_1.getOrderByIdController);
 orderRouter.post("/create", order_controller_1.createOrderController);
 /**
  * @openapi
- * /api/orders/{id}/status:
+ * /api/orders/status/{id}:
  *   put:
  *     summary: Actualiza el estado de una orden
  *     tags:
  *       - Órdenes
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -99,14 +106,16 @@ orderRouter.post("/create", order_controller_1.createOrderController);
  *             properties:
  *               status:
  *                 type: string
- *                 enum: [PENDING, PAID, SHIPPED, DELIVERED, CANCELLED]
+ *                 enum: [PAID, PENDING , SHIPPED, DELIVERED, CANCELLED]
  *     responses:
  *       200:
  *         description: Estado actualizado
  *       400:
  *         description: Error de validación
+ *       401:
+ *         description: Sin autenticación o token inválido
  *       404:
  *         description: Orden no encontrada
  */
-orderRouter.put("/:id/status", order_controller_1.updateOrderStatusController);
+orderRouter.put("/status/:id", auth_middleware_1.authMiddleware, order_controller_1.updateOrderStatusController);
 exports.default = orderRouter;

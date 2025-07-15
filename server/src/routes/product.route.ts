@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getManyProductsController, getProductByIdController, createProductController, updateProductController, deleteProductController } from "../controllers/product.controller";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const productRouter = Router();
 
@@ -10,6 +11,8 @@ const productRouter = Router();
  *     summary: Obtiene todos los productos
  *     tags:
  *       - Productos
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de productos
@@ -20,7 +23,7 @@ const productRouter = Router();
  *               items:
  *                 type: object
  */
-productRouter.get('/getmany', getManyProductsController);
+productRouter.get('/getmany', authMiddleware, getManyProductsController);
 
 /**
  * @openapi
@@ -29,6 +32,8 @@ productRouter.get('/getmany', getManyProductsController);
  *     summary: Obtiene un producto por ID
  *     tags:
  *       - Productos
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -41,7 +46,7 @@ productRouter.get('/getmany', getManyProductsController);
  *       404:
  *         description: Producto no encontrado
  */
-productRouter.get('/:id', getProductByIdController);
+productRouter.get('/:id', authMiddleware, getProductByIdController);
 
 /**
  * @openapi
@@ -50,6 +55,8 @@ productRouter.get('/:id', getProductByIdController);
  *     summary: Crea un nuevo producto
  *     tags:
  *       - Productos
+ * security:
+ *   - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -69,7 +76,7 @@ productRouter.get('/:id', getProductByIdController);
  *       400:
  *         description: Error de validación
  */
-productRouter.post('/create', createProductController);
+productRouter.post('/create', authMiddleware, createProductController);
 
 /**
  * @openapi
@@ -78,6 +85,8 @@ productRouter.post('/create', createProductController);
  *     summary: Actualiza un producto por ID
  *     tags:
  *       - Productos
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -103,7 +112,7 @@ productRouter.post('/create', createProductController);
  *       404:
  *         description: Producto no encontrado
  */
-productRouter.put('/update/:id', updateProductController);
+productRouter.put('/update/:id', authMiddleware, updateProductController);
 
 
 /**
@@ -113,6 +122,8 @@ productRouter.put('/update/:id', updateProductController);
  *     summary: Elimina un producto por ID
  *     tags:
  *       - Productos
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -125,6 +136,6 @@ productRouter.put('/update/:id', updateProductController);
  *       404:
  *         description: Producto no encontrado
  */
-productRouter.delete('/delete/:id', deleteProductController);
+productRouter.delete('/delete/:id', authMiddleware, deleteProductController);
 
 export default productRouter;

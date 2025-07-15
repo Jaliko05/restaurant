@@ -2,6 +2,7 @@ import express from 'express';
 import userRouter from './routes/user.route';
 import productRouter from './routes/product.route';
 import orderRouter from './routes/order.route';
+import authRouter from './routes/auth.route';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -24,6 +25,15 @@ const swaggerOptions = {
             version: '1.0.0',
             description: 'Documentación de la API con Swagger :)',
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
     },
     apis: ['./src/routes/*.ts'],
 };
@@ -34,6 +44,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/auth', authRouter);
 
 
 app.listen(3000, () => {

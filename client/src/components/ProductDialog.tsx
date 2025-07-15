@@ -35,11 +35,17 @@ export const ProductDialog = ({ onCreated }: ProductDialogProps) => {
   });
 
   const onSubmit = async (data: ProductFormData) => {
-    await axios.post(`${URL_SERVER}/api/products/create`, {
-      name: data.name,
-      price: parseFloat(data.price),
-      description: data.description,
-    });
+    await axios.post(
+      `${URL_SERVER}/api/products/create`,
+      {
+        name: data.name,
+        price: parseFloat(data.price),
+        description: data.description,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
     reset();
     setIsOpen(false);
     onCreated();
