@@ -87,7 +87,7 @@ jobs:
                 POSTGRES_PASSWORD: Dkubi2025+
                 POSTGRES_DB: restaurant
               ports:
-                - "5432:5432"
+                - "5435:5432"
               volumes:
                 - postgres_data:/var/lib/postgresql/data
               networks:
@@ -140,6 +140,9 @@ jobs:
       - name: Stop existing containers
         run: |
           docker-compose -f docker-compose.prod.yml down || true
+          # Force cleanup of old containers that might be using port 5432
+          docker stop restaurant_db restaurant_server restaurant_client || true
+          docker rm restaurant_db restaurant_server restaurant_client || true
 
       - name: Pull latest images
         run: |
