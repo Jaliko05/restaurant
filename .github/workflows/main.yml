@@ -55,14 +55,17 @@ jobs:
 
   deploy:
     runs-on: self-hosted
-    needs: build-and-push-image
+    needs: build-and-push-images
 
     permissions:
       contents: read
-      packages: read # Permiso para leer imágenes en GHCR
-      id-token: write # Permiso para autenticarse con GHCR
+      packages: read
+      id-token: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Convert repository owner to lowercase
         run: echo "REPO_OWNER_LOWER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
@@ -70,16 +73,88 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Pull Docker image from GitHub
+      - name: Create production docker-compose.yml
         run: |
-          docker pull ghcr.io/${{ env.REPO_OWNER_LOWER }}/${{ env.IMAGE_NAME }}:latest || exit 1
+          cat > docker-compose.prod.yml << 'EOF'
+          version: "3.8"
+          
+          services:
+            postgres:
+              image: postgres:15
+              container_name: restaurant_db
+              environment:
+                POSTGRES_USER: tkd_desarrollo
+                POSTGRES_PASSWORD: Dkubi2025+
+                POSTGRES_DB: restaurant
+              ports:
+                - "5432:5432"
+              volumes:
+                - postgres_data:/var/lib/postgresql/data
+              networks:
+                - app-network
+              healthcheck:
+                test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+                interval: 5s
+                timeout: 5s
+                retries: 10
+          
+            server:
+              image: ghcr.io/${{ env.REPO_OWNER_LOWER }}/restaurant-server:latest
+              container_name: restaurant_server
+              environment:
+                DATABASE_URL: "postgresql://tkd_desarrollo:Dkubi2025+@postgres:5432/restaurant"
+                JWT_SECRET: "tu_jwt_secret_super_secreto"
+                JWT_EXPIRE: "7d"
+                PORT: 3000
+                RATE_LIMIT_WINDOW_MS: 900000
+                RATE_LIMIT_MAX: 100
+              ports:
+                - "3001:3000"
+              command: sh -c "npx prisma migrate deploy && node dist/server.js"
+              depends_on:
+                postgres:
+                  condition: service_healthy
+              networks:
+                - app-network
+          
+            client:
+              image: ghcr.io/${{ env.REPO_OWNER_LOWER }}/restaurant-client:latest
+              container_name: restaurant_client
+              environment:
+                VITE_URL_SERVER: http://server:3000
+              ports:
+                - "4174:4173"
+              depends_on:
+                - server
+              networks:
+                - app-network
+          
+          volumes:
+            postgres_data:
+          
+          networks:
+            app-network:
+              driver: bridge
+          EOF
 
-      - name: Stop and remove existing container
+      - name: Stop existing containers
         run: |
-          docker stop ${{ env.CONTAINER_NAME }} || true
-          docker rm ${{ env.CONTAINER_NAME }} || true
+          docker-compose -f docker-compose.prod.yml down || true
 
-      - name: Run Docker container
+      - name: Pull latest images
         run: |
-          docker run -d --name ${{ env.CONTAINER_NAME }} -p 3000:3000 
-            ${{ env.REGISTRY }}/${{ env.REPO_OWNER_LOWER }}/${{ env.IMAGE_NAME }}:latest
+          docker pull ghcr.io/${{ env.REPO_OWNER_LOWER }}/restaurant-server:latest
+          docker pull ghcr.io/${{ env.REPO_OWNER_LOWER }}/restaurant-client:latest
+
+      - name: Deploy with Docker Compose
+        run: |
+          docker-compose -f docker-compose.prod.yml up -d
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for services to start..."
+          sleep 30
+
+      - name: Check service status
+        run: |
+          docker-compose -f docker-compose.prod.yml ps
