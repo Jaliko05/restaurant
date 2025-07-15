@@ -32,7 +32,7 @@ services:
       RATE_LIMIT_WINDOW_MS: 900000
       RATE_LIMIT_MAX: 100
     ports:
-      - "3001:3000"
+      - "3008:3000"
     command: sh -c "npx prisma migrate deploy && node dist/server.js"
     depends_on:
       postgres:
@@ -45,7 +45,7 @@ services:
       context: ./client
     container_name: restaurant_client
     environment:
-      VITE_URL_SERVER: http://server:3001
+      VITE_URL_SERVER: http://server:3008
     ports:
       - "4174:4173"
     depends_on:

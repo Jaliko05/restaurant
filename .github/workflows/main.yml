@@ -77,7 +77,7 @@ jobs:
         run: |
           cat > docker-compose.prod.yml << 'EOF'
           version: "3.8"
-          
+
           services:
             postgres:
               image: postgres:15
@@ -97,7 +97,7 @@ jobs:
                 interval: 5s
                 timeout: 5s
                 retries: 10
-          
+
             server:
               image: ghcr.io/${{ env.REPO_OWNER_LOWER }}/restaurant-server:latest
               container_name: restaurant_server
@@ -109,29 +109,29 @@ jobs:
                 RATE_LIMIT_WINDOW_MS: 900000
                 RATE_LIMIT_MAX: 100
               ports:
-                - "3001:3000"
+                - "3008:3000"
               command: sh -c "npx prisma migrate deploy && node dist/server.js"
               depends_on:
                 postgres:
                   condition: service_healthy
               networks:
                 - app-network
-          
+
             client:
               image: ghcr.io/${{ env.REPO_OWNER_LOWER }}/restaurant-client:latest
               container_name: restaurant_client
               environment:
-                VITE_URL_SERVER: http://server:3000
+                VITE_URL_SERVER: http://server:3008
               ports:
                 - "4174:4173"
               depends_on:
                 - server
               networks:
                 - app-network
-          
+
           volumes:
             postgres_data:
-          
+
           networks:
             app-network:
               driver: bridge
