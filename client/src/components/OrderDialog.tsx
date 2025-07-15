@@ -39,6 +39,12 @@ interface Product {
   price: number;
 }
 
+interface User {
+  id: string;
+  name: string;
+  email?: string; // agregado por si tienes email
+}
+
 interface Props {
   onCreated: () => void;
 }
@@ -46,7 +52,9 @@ interface Props {
 export const OrderDialog = ({ onCreated }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingUsers, setLoadingUsers] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -59,6 +67,7 @@ export const OrderDialog = ({ onCreated }: Props) => {
     control,
     reset,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormInputData>({
     resolver: zodResolver(inputSchema),
@@ -74,6 +83,7 @@ export const OrderDialog = ({ onCreated }: Props) => {
   });
 
   const selectedProducts = watch("products");
+  const selectedUserId = watch("userId");
 
   const URL_SERVER = import.meta.env.VITE_URL_SERVER || "http://localhost:3000";
 
@@ -102,9 +112,24 @@ export const OrderDialog = ({ onCreated }: Props) => {
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      setLoadingUsers(true);
+      const res = await axios.get(`${URL_SERVER}/api/users/getmany`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUsers(res.data);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       fetchProducts();
+      fetchUsers();
     }
   }, [isOpen]);
 
@@ -158,6 +183,10 @@ export const OrderDialog = ({ onCreated }: Props) => {
     }
   };
 
+  const handleUserSelect = (userId: string) => {
+    setValue("userId", userId);
+  };
+
   return (
     <>
       <button
@@ -205,19 +234,72 @@ export const OrderDialog = ({ onCreated }: Props) => {
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {/* Sección de selección de usuario */}
                 <div>
-                  <label
-                    htmlFor="userId"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    ID del Usuario
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Seleccionar Usuario
                   </label>
+
+                  {loadingUsers ? (
+                    <div className="flex items-center py-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                      <span className="ml-2 text-gray-600 text-sm">
+                        Cargando usuarios...
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="max-h-32 overflow-y-auto border border-gray-300 rounded">
+                      {users.length === 0 ? (
+                        <div className="p-3 text-gray-500 text-sm">
+                          No hay usuarios disponibles
+                        </div>
+                      ) : (
+                        users.map((user) => (
+                          <div
+                            key={user.id}
+                            onClick={() => handleUserSelect(user.id)}
+                            className={`p-3 cursor-pointer border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors ${
+                              selectedUserId === user.id
+                                ? "bg-blue-50 border-blue-200"
+                                : ""
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div className="font-medium text-sm">
+                                  {user.name}
+                                </div>
+                                {user.email && (
+                                  <div className="text-xs text-gray-500">
+                                    {user.email}
+                                  </div>
+                                )}
+                              </div>
+                              {selectedUserId === user.id && (
+                                <div className="text-blue-600 text-sm">✓</div>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  )}
+
+                  {/* Input oculto para el registro del formulario */}
                   <input
-                    id="userId"
+                    type="hidden"
                     {...register("userId")}
-                    placeholder="ID del Usuario"
-                    className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={selectedUserId}
                   />
+
+                  {/* Mostrar usuario seleccionado */}
+                  {selectedUserId && (
+                    <div className="mt-2 text-sm text-gray-600">
+                      Usuario seleccionado:{" "}
+                      {users.find((u) => u.id === selectedUserId)?.name}
+                    </div>
+                  )}
+
                   {errors.userId && (
                     <p className="mt-1 text-sm text-red-600">
                       {errors.userId.message}
@@ -225,6 +307,7 @@ export const OrderDialog = ({ onCreated }: Props) => {
                   )}
                 </div>
 
+                {/* Sección de productos */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Productos

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getManyProductsController, getProductByIdController, createProductController, updateProductController } from "../controllers/product.controller";
+import { getManyProductsController, getProductByIdController, createProductController, updateProductController, deleteProductController } from "../controllers/product.controller";
 
 const productRouter = Router();
 
@@ -73,7 +73,7 @@ productRouter.post('/create', createProductController);
 
 /**
  * @openapi
- * /api/products/{id}:
+ * /api/products/update/{id}:
  *   put:
  *     summary: Actualiza un producto por ID
  *     tags:
@@ -103,6 +103,28 @@ productRouter.post('/create', createProductController);
  *       404:
  *         description: Producto no encontrado
  */
-productRouter.put('/:id', updateProductController);
+productRouter.put('/update/:id', updateProductController);
+
+
+/**
+ * @openapi
+ * /api/products/delete/{id}:
+ *   delete:
+ *     summary: Elimina un producto por ID
+ *     tags:
+ *       - Productos
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Producto eliminado
+ *       404:
+ *         description: Producto no encontrado
+ */
+productRouter.delete('/delete/:id', deleteProductController);
 
 export default productRouter;

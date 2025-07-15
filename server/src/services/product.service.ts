@@ -23,3 +23,9 @@ export const updateProduct = async (id: string, productData: { name?: string; pr
         data: productData,
     });
 };
+
+export const deleteProduct = async (id: string) => {
+    return await prisma.product.delete({
+        where: { id: id },
+    });
+};

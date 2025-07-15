@@ -32,7 +32,7 @@ export const ProductCard = ({ product, onUpdated }: Props) => {
   };
 
   const handleDelete = async () => {
-    await axios.delete(`${URL_SERVER}/api/products/${product.id}`);
+    await axios.delete(`${URL_SERVER}/api/products/delete/${product.id}`);
     onUpdated?.();
   };
 

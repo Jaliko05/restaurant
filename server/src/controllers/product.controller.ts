@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getManyProducts, getProductById, createProduct, updateProduct } from "../services/product.service";
+import { getManyProducts, getProductById, createProduct, updateProduct, deleteProduct } from "../services/product.service";
 
 export const getManyProductsController = async (req: Request, res: Response) => {
     try {
@@ -44,3 +44,14 @@ export const updateProductController = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Failed to update product" });
     }
 };
+
+export const deleteProductController = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        await deleteProduct(id);
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        res.status(500).json({ error: "Failed to delete product" });
+    }
+}

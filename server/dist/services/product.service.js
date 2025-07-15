@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProduct = exports.createProduct = exports.getProductById = exports.getManyProducts = void 0;
+exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProductById = exports.getManyProducts = void 0;
 const prisma_1 = require("../config/prisma");
 const getManyProducts = () => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.prisma.product.findMany();
@@ -34,3 +34,9 @@ const updateProduct = (id, productData) => __awaiter(void 0, void 0, void 0, fun
     });
 });
 exports.updateProduct = updateProduct;
+const deleteProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.prisma.product.delete({
+        where: { id: id },
+    });
+});
+exports.deleteProduct = deleteProduct;

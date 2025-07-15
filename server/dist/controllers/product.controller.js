@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProductController = exports.createProductController = exports.getProductByIdController = exports.getManyProductsController = void 0;
+exports.deleteProductController = exports.updateProductController = exports.createProductController = exports.getProductByIdController = exports.getManyProductsController = void 0;
 const product_service_1 = require("../services/product.service");
 const getManyProductsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -59,3 +59,15 @@ const updateProductController = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.updateProductController = updateProductController;
+const deleteProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        yield (0, product_service_1.deleteProduct)(id);
+        res.status(204).send();
+    }
+    catch (error) {
+        console.error("Error deleting product:", error);
+        res.status(500).json({ error: "Failed to delete product" });
+    }
+});
+exports.deleteProductController = deleteProductController;

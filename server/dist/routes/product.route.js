@@ -101,4 +101,24 @@ productRouter.post('/create', product_controller_1.createProductController);
  *         description: Producto no encontrado
  */
 productRouter.put('/:id', product_controller_1.updateProductController);
+/**
+ * @openapi
+ * /api/products/delete/{id}:
+ *   delete:
+ *     summary: Elimina un producto por ID
+ *     tags:
+ *       - Productos
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Producto eliminado
+ *       404:
+ *         description: Producto no encontrado
+ */
+productRouter.delete('/delete/:id', product_controller_1.deleteProductController);
 exports.default = productRouter;
