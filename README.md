@@ -113,9 +113,9 @@ restaurant/
 
 Una vez ejecutados, los servicios estarán disponibles en los siguientes puertos:
 
-- **Frontend**: http://46.202.88.11:4174/login
+- **Frontend**: http://localhost:4174/login
 - **Base de Datos**: localhost:5435
-- **API Documentation**: http://46.202.88.11:3008/api-docs/
+- **API Documentation**: http://localhost:3008/api-docs/
 
 ### Comandos Útiles
 
@@ -170,6 +170,8 @@ Las variables de entorno se configuran automáticamente en `docker-compose.yml`:
 - `VITE_URL_SERVER`: URL del backend para el frontend
 
 ## 🛑️ API Endpoints
+
+para hacer uso de swagger de la api se debe generar el token de autenticación
 
 ### Autenticación
 
@@ -237,3 +239,10 @@ Las variables de entorno se configuran automáticamente en `docker-compose.yml`:
 - `productId`: ID del producto
 - `quantity`: Cantidad del producto
 - `price`: Precio unitario
+
+## 🐳 Despliegue
+
+El aplicativo se encuentra desplegado con un Workflow a un vps las urls son las siguiente
+
+- **Frontend**: http://http://46.202.88.11/:4174/login
+- **API Documentation**: http://http://46.202.88.11/:3008/api-docs/
