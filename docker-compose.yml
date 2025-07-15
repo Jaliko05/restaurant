@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: Dkubi2025+
       POSTGRES_DB: restaurant
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -25,7 +25,7 @@ services:
       context: ./server
     container_name: restaurant_server
     environment:
-      DATABASE_URL: "postgresql://tkd_desarrollo:Dkubi2025+@postgres:5432/restaurant"
+      DATABASE_URL: "postgresql://tkd_desarrollo:Dkubi2025+@postgres:5435/restaurant"
       JWT_SECRET: "tu_jwt_secret_super_secreto"
       JWT_EXPIRE: "7d"
       PORT: 3000
@@ -45,7 +45,7 @@ services:
       context: ./client
     container_name: restaurant_client
     environment:
-      VITE_URL_SERVER: http://server:3000
+      VITE_URL_SERVER: http://server:3001
     ports:
       - "4174:4173"
     depends_on:
