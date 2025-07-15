@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { getUsersController, createUserController, getUserController, loginController, updateRoleUserController } from "../controllers/user.controller.js";
-
+import { getUsersController, createUserController, loginController, updateRoleUserController } from "../controllers/user.controller.js";
 const userRouter = Router();
-
 /**
  * @openapi
  * /api/users/getmany:
@@ -21,7 +19,6 @@ const userRouter = Router();
  *                 type: object
  */
 userRouter.get('/getmany', getUsersController);
-
 /**
  * @openapi
  * /api/users/create:
@@ -49,7 +46,6 @@ userRouter.get('/getmany', getUsersController);
  *         description: Error de validación
  */
 userRouter.post('/create', createUserController);
-
 /**
  * @openapi
  * /api/users/get:
@@ -70,9 +66,6 @@ userRouter.post('/create', createUserController);
  *       404:
  *         description: Usuario no encontrado
  */
-
-
-
 /**
  * @openapi
  * /api/users/login:
@@ -134,8 +127,6 @@ userRouter.post('/create', createUserController);
  *                   example: "Failed to login user"
  */
 userRouter.post('/login', loginController);
-
-
 /**
  * @openapi
  * /api/users/update-role:
@@ -161,5 +152,4 @@ userRouter.post('/login', loginController);
  *         description: Error al actualizar el rol del usuario
  */
 userRouter.post('/update-role', updateRoleUserController);
-
 export default userRouter;

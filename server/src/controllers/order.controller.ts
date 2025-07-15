@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getManyOrders, createOrder, getOrderById, updateOrderStatus } from "../services/order.service";
+import { getManyOrders, createOrder, getOrderById, updateOrderStatus } from "../services/order.service.js";
 
 export const getManyOrdersController = async (req: Request, res: Response) => {
     try {

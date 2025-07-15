@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch src/server.ts"
+    "dev": "tsx --watch src/server.ts",
+    "build": "prisma generate && tsc",
+    "generate": "prisma generate"
   },
   "keywords": [],
   "author": "",

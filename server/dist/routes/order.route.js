@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { getManyOrdersController, createOrderController, getOrderByIdController, updateOrderStatusController } from "../controllers/order.controller.js";
-
 const orderRouter = Router();
-
 /**
  * @openapi
  * /api/orders/getmany:
@@ -21,7 +19,6 @@ const orderRouter = Router();
  *                 type: object
  */
 orderRouter.get("/getmany", getManyOrdersController);
-
 /**
  * @openapi
  * /api/orders/{id}:
@@ -43,7 +40,6 @@ orderRouter.get("/getmany", getManyOrdersController);
  *         description: Orden no encontrada
  */
 orderRouter.get("/:id", getOrderByIdController);
-
 /**
  * @openapi
  * /api/orders/create:
@@ -78,7 +74,6 @@ orderRouter.get("/:id", getOrderByIdController);
  *         description: Error de validación
  */
 orderRouter.post("/create", createOrderController);
-
 /**
  * @openapi
  * /api/orders/{id}/status:
@@ -112,5 +107,4 @@ orderRouter.post("/create", createOrderController);
  *         description: Orden no encontrada
  */
 orderRouter.put("/:id/status", updateOrderStatusController);
-
 export default orderRouter;

@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { getManyProductsController, getProductByIdController, createProductController, updateProductController } from "../controllers/product.controller.js";
-
 const productRouter = Router();
-
 /**
  * @openapi
  * /api/products/getmany:
@@ -21,7 +19,6 @@ const productRouter = Router();
  *                 type: object
  */
 productRouter.get('/getmany', getManyProductsController);
-
 /**
  * @openapi
  * /api/products/{id}:
@@ -42,7 +39,6 @@ productRouter.get('/getmany', getManyProductsController);
  *         description: Producto no encontrado
  */
 productRouter.get('/:id', getProductByIdController);
-
 /**
  * @openapi
  * /api/products/create:
@@ -70,7 +66,6 @@ productRouter.get('/:id', getProductByIdController);
  *         description: Error de validación
  */
 productRouter.post('/create', createProductController);
-
 /**
  * @openapi
  * /api/products/{id}:
@@ -104,5 +99,4 @@ productRouter.post('/create', createProductController);
  *         description: Producto no encontrado
  */
 productRouter.put('/:id', updateProductController);
-
 export default productRouter;

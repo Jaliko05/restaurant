@@ -1,7 +1,7 @@
-import { UserRole } from "../../generated/prisma";
-import { prisma } from "../config/prisma";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { UserRole } from "../../generated/prisma/index.js";
+import { prisma } from "../config/prisma.js";
+import * as bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
 
 export const getAllUsers = async () => {
     return await prisma.user.findMany();

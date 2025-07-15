@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { getUsersController, createUserController, getUserController, loginController, updateRoleUserController } from "../controllers/user.controller.js";
-
-const userRouter = Router();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const user_controller_1 = require("../controllers/user.controller");
+const userRouter = (0, express_1.Router)();
 /**
  * @openapi
  * /api/users/getmany:
@@ -20,8 +20,7 @@ const userRouter = Router();
  *               items:
  *                 type: object
  */
-userRouter.get('/getmany', getUsersController);
-
+userRouter.get('/getmany', user_controller_1.getUsersController);
 /**
  * @openapi
  * /api/users/create:
@@ -48,8 +47,7 @@ userRouter.get('/getmany', getUsersController);
  *       400:
  *         description: Error de validación
  */
-userRouter.post('/create', createUserController);
-
+userRouter.post('/create', user_controller_1.createUserController);
 /**
  * @openapi
  * /api/users/get:
@@ -70,9 +68,6 @@ userRouter.post('/create', createUserController);
  *       404:
  *         description: Usuario no encontrado
  */
-
-
-
 /**
  * @openapi
  * /api/users/login:
@@ -133,9 +128,7 @@ userRouter.post('/create', createUserController);
  *                   type: string
  *                   example: "Failed to login user"
  */
-userRouter.post('/login', loginController);
-
-
+userRouter.post('/login', user_controller_1.loginController);
 /**
  * @openapi
  * /api/users/update-role:
@@ -160,6 +153,5 @@ userRouter.post('/login', loginController);
  *       500:
  *         description: Error al actualizar el rol del usuario
  */
-userRouter.post('/update-role', updateRoleUserController);
-
-export default userRouter;
+userRouter.post('/update-role', user_controller_1.updateRoleUserController);
+exports.default = userRouter;

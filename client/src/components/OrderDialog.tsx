@@ -112,8 +112,6 @@ export const OrderDialog = ({ onCreated }: Props) => {
     try {
       setIsSubmitting(true);
       setError(null);
-
-      // Transformar los datos manualmente para asegurar que quantity sea number
       const transformedData = {
         userId: data.userId,
         products: data.products.map((product) => ({

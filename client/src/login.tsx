@@ -15,6 +15,7 @@ const URL_SERVER = import.meta.env.VITE_URL_SERVER || "http://localhost:3000";
 
 export default function Login() {
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -26,10 +27,8 @@ export default function Login() {
   const onSubmit = async (data: FormData) => {
     try {
       const res = await axios.post(`${URL_SERVER}/api/users/login`, data);
-
-      // Guarda tanto el token como la información del usuario
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user)); // ← Esta línea faltaba
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       navigate("/dashboard");
     } catch (error) {

@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { getManyProductsController, getProductByIdController, createProductController, updateProductController } from "../controllers/product.controller.js";
-
-const productRouter = Router();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const product_controller_1 = require("../controllers/product.controller");
+const productRouter = (0, express_1.Router)();
 /**
  * @openapi
  * /api/products/getmany:
@@ -20,8 +20,7 @@ const productRouter = Router();
  *               items:
  *                 type: object
  */
-productRouter.get('/getmany', getManyProductsController);
-
+productRouter.get('/getmany', product_controller_1.getManyProductsController);
 /**
  * @openapi
  * /api/products/{id}:
@@ -41,8 +40,7 @@ productRouter.get('/getmany', getManyProductsController);
  *       404:
  *         description: Producto no encontrado
  */
-productRouter.get('/:id', getProductByIdController);
-
+productRouter.get('/:id', product_controller_1.getProductByIdController);
 /**
  * @openapi
  * /api/products/create:
@@ -69,8 +67,7 @@ productRouter.get('/:id', getProductByIdController);
  *       400:
  *         description: Error de validación
  */
-productRouter.post('/create', createProductController);
-
+productRouter.post('/create', product_controller_1.createProductController);
 /**
  * @openapi
  * /api/products/{id}:
@@ -103,6 +100,5 @@ productRouter.post('/create', createProductController);
  *       404:
  *         description: Producto no encontrado
  */
-productRouter.put('/:id', updateProductController);
-
-export default productRouter;
+productRouter.put('/:id', product_controller_1.updateProductController);
+exports.default = productRouter;
